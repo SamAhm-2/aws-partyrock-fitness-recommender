@@ -1,6 +1,6 @@
-# 🔧 How to Build EnerFit on PartyRock
+# 🔧 How to Build This App on PartyRock
 
-A step-by-step guide to recreating (or remixing) this app using Amazon PartyRock.
+A step-by-step guide to recreating (or remixing) this app using Amazon PartyRock — no coding required.
 
 ---
 
@@ -8,89 +8,148 @@ A step-by-step guide to recreating (or remixing) this app using Amazon PartyRock
 
 - A free AWS account (or sign in with Google/Apple at partyrock.aws)
 - No coding experience needed
+- The app has 6 inputs and 8 outputs — budget around 2–3 hours to build and test everything
 
 ---
 
 ## Step 1 — Create a PartyRock Account
 
 1. Go to [partyrock.aws](https://partyrock.aws)
-2. Click **Sign In** and use your AWS, Google, or Apple account
+2. Click **Sign In** — use your AWS, Google, or Apple account
 3. New users get free trial credits to build and test apps
 
 ---
 
 ## Step 2 — Start a New App
 
-You have two options:
+**Option A — Generate from description (recommended for beginners)**
+Click **Generate app** and type something like:
+> *"A fitness app that takes the user's energy level, available time, equipment, fitness level, goal, and dietary needs, then generates a personalized workout plan, music playlist, nutrition guide, and motivational support."*
 
-**Option A — Generate from description (recommended for beginners)**  
-Click **Generate app** and type something like:  
-> *"An app that asks users how energetic they feel today and recommends a personalized workout routine based on their energy level"*  
-PartyRock will auto-generate a starting layout.
+PartyRock will auto-generate a starting layout you can refine.
 
-**Option B — Build from scratch**  
+**Option B — Build from scratch**
 Click **Build app yourself** to start with a blank canvas and add widgets manually.
 
 ---
 
-## Step 3 — Set Up Your Widgets
+## Step 3 — Set Up Your Input Widgets
 
-PartyRock apps are built from widgets. For EnerFit, you need:
+These are the 6 inputs the user fills in before the AI generates anything.
 
-### Widget 1: User Input
-- **Type:** User Input
-- **Label:** Something like *"How's your energy today?"*
-- **Placeholder text:** *"e.g., I'm exhausted, running on 5 hours of sleep"*
-
-### Widget 2: AI Text Generation
-- **Type:** AI Text Generation
-- **Connected to:** Widget 1 (so it reads the user's input)
-- **Prompt:** Write your instructions here (see PROMPT_DESIGN.md for the full prompt)
-
-### Optional Widget 3: Title / Header
-- **Type:** Static Text
-- Use this to add branding, instructions, or a description of the app
+| Widget | Type | Options / Notes |
+|---|---|---|
+| Energy Level | Slider | Label stops: Exhausted, Low, Good, Moderate, Peak |
+| Available Time | Single select | 15 min / 30 min / 45 min / 60 min |
+| Available Equipment | Single select | None / Basic home / Home furniture / Full home gym / Commercial gym / Outdoor space |
+| Fitness Level | Single select | Beginner / Intermediate / Advanced |
+| Primary Goal | Single select | Get moving / Build strength / Lose weight / Feel better |
+| Dietary Considerations | Text input | Open text — user types their dietary needs (e.g. halal, vegetarian, nut allergy) |
 
 ---
 
-## Step 4 — Write Your Prompt
+## Step 4 — Set Up Your Output Widgets (in order)
 
-In the AI Text Generation widget, click the prompt field and write your instructions. 
+Build outputs in this order because later ones reference earlier ones.
 
-To reference the user's input dynamically, use the `@` symbol to tag your input widget:
-> *"Based on the user's energy level: @UserInput, recommend a workout..."*
+### Output 1: Movement Guide (AI Text)
+Write a prompt that:
+- References all 6 user inputs using the `@` tag (e.g. `@EnergyLevel`, `@AvailableTime`)
+- Instructs the AI to generate a Warm-Up → Main Circuit → Cool-Down structure
+- Includes a modifications section for low-energy users
+- Specifies rep counts, duration, and rest periods
 
-This passes whatever the user typed directly into the AI prompt.
+### Output 2: Movement Visual (AI Image)
+Write an image prompt that:
+- References `@EnergyLevel` and `@MovementGuide`
+- Describes the visual tone based on energy (calm/soft for low, active/dynamic for high)
+
+### Output 3: Workout Playlist (AI Text)
+Write a prompt that:
+- References `@MovementGuide` and `@EnergyLevel`
+- Specifies BPM ranges per phase: warm-up (90–100), circuit (100–128), cool-down (60–85)
+- Asks for specific song recommendations with search terms
+- Asks for setup instructions for Spotify, Apple Music, and YouTube Music
+
+### Output 4: Fuel Guide (AI Text)
+Write a prompt that:
+- References `@EnergyLevel`, `@MovementGuide`, and `@DietaryConsiderations`
+- Asks for separate pre-workout and post-workout meal options
+- Specifies multiple options at different prep times
+- Asks for portion guidance scaled to workout intensity
+- Asks for a do/don't list, hydration tips, and a shopping list
+
+### Output 5: Meal Inspiration Image (AI Image)
+Write an image prompt that:
+- References `@FuelGuide`
+- Asks for a clean, well-lit, aesthetically styled food photo
+
+### Output 6: Mindset Boost (AI Text)
+Write a prompt that:
+- References `@EnergyLevel` and `@PrimaryGoal`
+- Instructs the AI to first acknowledge the user's current state, then encourage
+- Specifies the tone (warm, honest, not aggressively positive)
+- Asks for a relevant motivational quote at the end
+
+### Output 7: Mindset Image (AI Image)
+Write an image prompt with conditional logic:
+- Low/Exhausted → soft, calming colors, peaceful imagery
+- Good/Moderate → balanced, steady progress imagery
+- Peak → dynamic, vibrant, energetic imagery
+
+### Output 8: Personal Coach Chat (Chatbot)
+Write a system prompt that:
+- Gives the AI the user's full context: energy level, goal, fitness level, dietary needs
+- Instructs it to reference the workout and nutrition plan already generated
+- Sets tone to adapt based on energy level (gentle for low, energizing for peak)
+- Keeps scope focused on fitness, nutrition, and mindset
 
 ---
 
-## Step 5 — Test Your App
+## Step 5 — Connect the Widgets
 
-1. Click **Preview** to see the app as a user would
-2. Type different energy descriptions and see how the AI responds
-3. Go back and refine your prompt based on what you observe
+In each output widget's prompt, use the `@` symbol to reference other widgets:
+- `@EnergyLevel` — pulls in the slider value
+- `@MovementGuide` — pulls in the workout text output
+- `@FuelGuide` — pulls in the nutrition output
+- And so on
 
-**Test these scenarios:**
-- "I'm completely exhausted and barely slept"
-- "I feel okay, moderate energy"
-- "I'm feeling great and ready to push hard"
+This chaining is what makes all 8 outputs feel like one coherent session plan rather than 8 separate AI responses.
 
 ---
 
-## Step 6 — Publish & Share
+## Step 6 — Test Across Energy Levels
+
+Before publishing, test with at least these 3 scenarios:
+
+**Scenario A — Exhausted**
+- Energy: Exhausted | Time: 15 min | Equipment: None | Level: Beginner | Goal: Get moving
+- Check: Is the workout gentle? Is the playlist calm? Is the mindset message supportive, not pushy?
+
+**Scenario B — Moderate**
+- Energy: Moderate | Time: 30 min | Equipment: Basic home | Level: Intermediate | Goal: Feel better
+- Check: Is the workout appropriately balanced? Does everything feel calibrated to "medium"?
+
+**Scenario C — Peak**
+- Energy: Peak | Time: 45 min | Equipment: Full home gym | Level: Advanced | Goal: Build strength
+- Check: Is the workout challenging? Is the music high-energy? Is the mindset image dynamic?
+
+---
+
+## Step 7 — Publish & Share
 
 1. Click **Publish** to make your app public
 2. Copy the shareable link
-3. Share on LinkedIn, GitHub, or anywhere you want to showcase your work
+3. Add the link to your GitHub README and LinkedIn post
 
 ---
 
-## Tips for Remixing This App
+## Tips for Remixing
 
-- Add an **image generation widget** to show a visual of the recommended workout
-- Add a **second input** for "time available" to make recommendations more practical
-- Change the theme to fitness/health colors in the app settings
-- Add a **chatbot widget** so users can ask follow-up questions
+- Add a **weekly planner** widget that generates a 5-day schedule based on the user's goal
+- Add a **sleep quality input** to further refine recovery and intensity recommendations
+- Add a **progress reflection** chatbot that asks how the session went and suggests adjustments
+- Try different AI models in PartyRock to see how output quality and style varies
 
 ---
 
@@ -99,3 +158,4 @@ This passes whatever the user typed directly into the AI prompt.
 - [PartyRock Documentation](https://partyrock.aws/guide)
 - [Prompt Engineering Guide (Anthropic)](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
 - [Amazon Bedrock Overview](https://aws.amazon.com/bedrock/)
+
