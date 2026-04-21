@@ -1,4 +1,4 @@
-# ⚡ aws-partyrock-fitness-recommender
+# ⚡ AWS-PartyRock-Fitness-Recommender
 
 > AI-powered fitness app built on Amazon PartyRock — recommends personalized workouts, playlists, nutrition, and mindset support based on the user's current energy level using prompt engineering and Amazon Bedrock.
 
