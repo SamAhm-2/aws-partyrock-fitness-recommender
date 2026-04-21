@@ -90,7 +90,7 @@ Building this taught me several key AI concepts:
 
 ## 💡 Why This Project?
 
-I built EnerFit to explore how **generative AI can make wellness more adaptive and human**. Most fitness apps are rigid — they don't care if you slept badly or are stressed. AI changes that. This was also my first hands-on experience with prompt engineering, and I wanted to share what's possible even without a technical background.
+I built EnerFit to explore how **generative AI can make wellness more adaptive and human**. Most fitness apps are rigid — they don't care if you slept badly or are stressed and what window of precise time to have at the moment. AI changes that. This was also my first hands-on experience with prompt engineering, and I wanted to share what's possible even without a technical background.
 
 ---
 
