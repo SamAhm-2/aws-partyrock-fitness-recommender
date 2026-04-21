@@ -8,7 +8,7 @@
 
 ## 🧠 What is this app?
 
-This is an AI-powered fitness recommender built on **Amazon PartyRock** that suggests personalized workout routines based on your current energy level. Instead of following a rigid schedule, it meets you where you are — whether you're feeling pumped and ready to push hard, or low-energy and just want to move gently.
+This is an AI-powered fitness recommender- named EnerFit- built on **Amazon PartyRock** that suggests personalized workout routines based on your current energy level. Instead of following a rigid schedule, it meets you where you are — whether you're feeling pumped and ready to push hard, or low-energy and just want to move gently.
 
 You describe how you feel. The AI figures out what workout fits.
 
